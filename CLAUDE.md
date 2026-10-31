@@ -2,6 +2,8 @@
 
 Read `README.md` first. It explains what the app does and how to run, test and deploy it.
 
+This is an early working version that the store owner is continuing to build and refine with you. "Where it stands" in `README.md` lists what hasn't been tested yet. Keep that list current as things get tested, fixed or added.
+
 ## The app in short
 
 - `index.html` is a single-page app with no build step and no framework. All state lives in the in-memory object `d`. `steps` is the list of screens, each with a `view()` that returns HTML and an optional `check()` that returns validation errors.

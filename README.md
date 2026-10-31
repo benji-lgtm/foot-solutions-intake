@@ -1,6 +1,8 @@
 # Foot Solutions patient intake
 
-An iPad web app that walks a patient through the Foot Solutions intake form one question at a time, then emails the finished form to the store. It replaces the paper "Patient Information/Intake Form".
+An iPad web app that walks a patient through the Foot Solutions intake form one question at a time, then emails the finished form to the store. It's meant to replace the paper "Patient Information/Intake Form".
+
+**This is an early working version, not a finished product.** It hasn't been used with real patients yet. See "Where it stands" at the bottom for what has and hasn't been tested.
 
 ## What the patient sees
 
@@ -68,8 +70,21 @@ After that, **Finish** emails the form to the store automatically. The email has
 
 The "Is this your doctor?" screen can show a photo of the doctor. Get an API key at https://api-dashboard.search.brave.com, then add it in Vercel (Project, Settings, Environment Variables) as `BRAVE_API_KEY` and deploy again. A photo only shows when the web page it came from names that exact doctor. Without a key, the screen shows the doctor's initials.
 
-## Things to know
+## Where it stands
 
-- Card reading was tested with sample cards. Real cards in store lighting may need a retake now and then. Patients can always type anything that doesn't read.
-- The doctor search uses the public NPI Registry: https://npiregistry.cms.hhs.gov
-- The store's address and phone on the printed form are in the `sheet()` function in `index.html`.
+Tested and working:
+- Every screen, from the diabetes question through review and finish, clicked through in a browser at phone size.
+- Reading the license barcode from sample photos that were tilted, far away, sideways, blurry and glary.
+- Reading the Medicare number, insurance company and member ID from sample card images.
+- Doctor lookup against the live NPI Registry: https://npiregistry.cms.hhs.gov
+- The printed form, laid out like the paper one, with the card pictures on the following pages.
+- Sending, against a stand-in for Google: a failed send, the retry, and the email contents.
+
+Not tested yet:
+- A real iPad, its camera, and real cards in store lighting. Patients can always type anything that doesn't read.
+- A real Google Workspace account and Apps Script.
+- Printing to the store's printer.
+- Doctor photos (needs a Brave Search key).
+- The list of insurance companies the app recognizes is short (`CARRIERS` in `card-read.js`). Add names as they come up.
+
+The store's address and phone on the printed form are in the `sheet()` function in `index.html`.
