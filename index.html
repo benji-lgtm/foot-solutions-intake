@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: https://imgs.search.brave.com; style-src 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; worker-src 'self'; form-action 'none'; base-uri 'none'">
+<title>Foot Solutions Intake</title>
+<style>
+:root{--navy:#1f3a5f;--ink:#16202b;--muted:#566270;--line:#cfd6de;--bg:#f3f5f8;--err:#b42318;--ok:#256c45;--r:14px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:19px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.top{position:sticky;top:0;z-index:2;background:var(--navy);color:#fff;padding:14px 16px 0}
+.top .in{max-width:560px;margin:0 auto;font-weight:800;letter-spacing:.03em}
+.top small{font-weight:500;opacity:.8;margin-left:6px;letter-spacing:0}
+.prog{max-width:560px;margin:12px auto 0;height:6px;background:rgba(255,255,255,.22);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:#fff;transition:width .25s}
+main{max-width:560px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:28px;line-height:1.2;margin:0 0 8px;outline:none}
+.lead{color:var(--muted);margin:0 0 20px}
+.muted{color:var(--muted);font-size:16px}
+.note{font-size:16px;color:var(--muted);margin:12px 0 0}
+.note:empty{display:none}
+.note.ok{color:var(--ok);font-weight:600}
+.note.fail,.note.broke{color:var(--err);font-weight:600}
+label.f{display:block;margin:0 0 16px}
+label.f>span,.flabel{display:block;font-weight:600;margin-bottom:6px}
+.opt{font-weight:400;color:var(--muted)}
+input,select{width:100%;font:inherit;font-size:20px;min-height:56px;padding:10px 14px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+input:focus,select:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(31,58,95,.18)}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.row{display:grid;grid-template-columns:repeat(var(--n,2),minmax(0,1fr));gap:12px}
+.hint{display:block;font-size:16px;color:var(--muted);margin-top:6px}
+.hint.auto{color:var(--ok);font-weight:600}
+.err{color:var(--err);font-size:16px;font-weight:600;margin:6px 0 0}
+.bad input,.bad select{border-color:var(--err)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;padding:12px 18px;font:inherit;font-weight:700;border-radius:12px;border:2px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer}
+.btn:active{transform:translateY(1px)}
+.btn.alt{background:#fff;color:var(--navy)}
+.btn.link{background:none;border-color:transparent;color:var(--navy);font-weight:600;text-decoration:underline;min-height:48px;margin-top:8px}
+.btn[disabled]{opacity:.6}
+.acts{display:grid;gap:12px;margin-top:24px}
+.nav{display:grid;grid-template-columns:auto 1fr;gap:12px;margin-top:28px}
+.nav .btn.alt{width:auto;padding:12px 22px}
+.shot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:240px;border:3px dashed var(--line);border-radius:var(--r);background:#fff;cursor:pointer;text-align:center;padding:16px;color:var(--navy);font-weight:700}
+.shot:focus-within{border-color:var(--navy)}
+.shot img{max-width:100%;max-height:340px;border-radius:8px}
+.shot.has{border-style:solid;border-color:var(--ok)}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice .btn{min-height:72px}
+.choice .btn[aria-pressed=true]{background:var(--navy);color:#fff}
+.doc{background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:20px;text-align:center}
+.face{width:140px;height:140px;border-radius:50%;margin:0 auto 14px;background:#e3e8ee;display:grid;place-items:center;font-size:44px;font-weight:800;color:var(--navy);overflow:hidden}
+.face img{width:100%;height:100%;object-fit:cover}
+.doc h2{margin:0;font-size:24px}
+.doc .sp{color:var(--muted);margin:2px 0 12px}
+.doc p{margin:2px 0}
+.cap{font-size:14px;color:var(--muted);margin-top:10px!important}
+.count{font-size:15px;color:var(--muted);text-align:center;margin-top:12px}
+.need{padding-left:22px;margin:0 0 16px}.need li{margin:6px 0}
+.rev{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;margin-bottom:10px}
+.rev h3{display:flex;justify-content:space-between;align-items:center;margin:0 0 4px;font-size:18px}
+.rev h3 button{font:inherit;font-size:16px;color:var(--navy);background:none;border:0;text-decoration:underline;cursor:pointer;padding:6px}
+.rev p{margin:2px 0;color:var(--muted)}
+.thumbs{display:flex;gap:8px}.thumbs button{width:23%;padding:0;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer;overflow:hidden}.thumbs img{display:block;width:100%}
+.spin{display:inline-block;width:22px;height:22px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:s .8s linear infinite;margin-right:10px}
+@keyframes s{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+</style>
+<style id="sheet-css">
+/* The printed intake form, laid out like the paper one. Only visible when printing, and copied into the emailed form. */
+#sheet{display:none;font:10pt/1.2 Arial,Helvetica,sans-serif;color:#000}
+@page{size:letter;margin:.45in}
+@media print{body{background:#fff}.top,main{display:none!important}#sheet{display:block}}
+.sh-head{display:flex;justify-content:space-between;align-items:center}
+.sh-logo{font:800 19pt/.95 Arial,sans-serif;color:#2b3a55}
+.sh-need{border:2px solid #000;padding:2pt 8pt;font-weight:700}
+.sh-store{text-align:right;font-size:9pt;line-height:1.3}
+.sh-title{text-align:center;font-size:13pt;font-weight:400;margin:6pt 0 0}
+.sh-cols{display:grid;grid-template-columns:1fr 1fr;column-gap:.3in}
+.ln{display:grid;column-gap:8pt}
+.fld .v{border-bottom:1px solid #000;min-height:13pt;padding:1pt 2pt;font-size:10.5pt;font-weight:700;color:#0b2a6b;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.fld .l{font-size:8pt;margin:1pt 0}
+.sh-band{background:#8a8a8a;color:#fff;text-align:center;padding:2pt;margin:8pt 0 5pt;font-size:10.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.ck{display:flex;gap:7pt;font-size:8.5pt;line-height:1.25;margin-bottom:4pt}
+.bx{flex:none;width:11pt;height:11pt;border:1.5px solid #000;margin-top:1pt}
+.sh-sub{text-align:center;font-weight:700;font-size:9pt;margin:4pt 0}
+.sh-photos{break-before:page}
+.sh-photos figure{margin:0 0 10pt;text-align:center}
+.sh-photos img{max-width:100%;max-height:2.1in;border:1px solid #999}
+.sh-photos figcaption{font-size:10pt;margin-top:3pt}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">FOOT SOLUTIONS<small>Orem</small></div><div class="prog"><i id="bar"></i></div></header>
+<main id="app" aria-live="polite"></main>
+<section id="sheet"></section>
+<script src="card-read.js"></script>
+<script>
+// Everything the patient enters lives in this page's memory only: nothing is written to the device.
+// Card photos are read on the device itself; the only thing sent to the server is a doctor's name and city.
+const MEDICARE_PHONE = '1-800-633-4227'
+const IDLE_MS = 10 * 60 * 1000
+// The store's Google Apps Script web app (see google-apps-script.js). Empty means the front desk prints instead.
+const SEND_URL = ''
+const LICENSE_PX = 2000 // tested against tilted, distant and sideways photos: 2000 read all of them, bigger was slower and missed one
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
+const CAMERA = '<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>'
+const app = document.getElementById('app'), bar = document.getElementById('bar'), sheetEl = document.getElementById('sheet')
+let d, i, errs, fromReview
+
+function fresh() {
+  const look = () => ({ name: '', city: '', state: 'UT', list: null, at: 0, busy: false, err: '' })
+  d = { photos: {}, files: {}, scan: {}, auto: {}, sent: '', fromLicense: false, first: '', last: '', dob: { mo: '', day: '', yr: '' }, sex: '', phone: '', email: '',
+        newCustomer: '', street: '', city: '', state: 'UT', zip: '', p: { id: '', carrier: 'Medicare', phone: '', holder: '' },
+        s: { id: '', carrier: '', phone: '', holder: '' }, ref: null, pcp: null, look: { ref: look(), pcp: look() } }
+  i = 0; errs = {}; fromReview = false
+}
+function reset() {
+  Object.values(d.photos).forEach(URL.revokeObjectURL)
+  sheetEl.innerHTML = ''
+  fresh(); render()
+}
+
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+const get = k => k.split('.').reduce((o, p) => o?.[p], d) ?? ''
+const set = (k, v) => { const ps = k.split('.'), last = ps.pop(); ps.reduce((o, p) => o[p], d)[last] = v }
+const need = (...ks) => Object.fromEntries(ks.filter(k => !String(get(k)).trim()).map(k => [k, 'Please fill this in.']))
+const isMedicare = c => /^\s*medicare\s*$/i.test(c)
+const h = (t, sub) => `<h1 tabindex="-1">${t}</h1>${sub ? `<p class="lead">${sub}</p>` : ''}`
+const nav = (label = 'Next', back = true, act = 'next', busy = false) =>
+  `<div class="${back ? 'nav' : 'acts'}">${back ? '<button class="btn alt" data-act="back">Back</button>' : ''}<button class="btn" data-act="${act}" data-primary${busy ? ' disabled' : ''}>${label}</button></div>`
+const field = (k, label, o = {}) => {
+  const hint = d.auto[k] ? '<span class="hint auto">We read this from your card. Please check it.</span>' : o.hint ? `<span class="hint">${o.hint}</span>` : ''
+  return `<label class="f${errs[k] ? ' bad' : ''}"><span>${label}${o.opt ? ' <span class="opt">(optional)</span>' : ''}</span><input data-k="${k}" value="${esc(get(k))}" ${o.a || ''}>${hint}${errs[k] ? `<p class="err">${errs[k]}</p>` : ''}</label>`
+}
+const docName = x => `${x.first} ${x.last}${x.credential ? ', ' + x.credential : ''}`
+const docLine = x => !x ? 'Not given' : x.unverified ? `${x.name || 'Not given'} (the front desk will look this up)` : `${docName(x)}, ${x.city}`
+const dobText = () => d.dob.yr ? `${d.dob.mo}/${d.dob.day.padStart(2, '0')}/${d.dob.yr}` : ''
+
+// ---- Reading the cards, entirely on this device -------------------------------------------------
+const lib = p => new URL('vendor/' + p, location.href).href
+const loadScript = src => new Promise((ok, no) => document.head.append(Object.assign(document.createElement('script'), { src, onload: ok, onerror: no })))
+let zxingP, ocrP
+const zxing = () => zxingP ||= loadScript(lib('zxing-reader.js'))
+  .then(() => ZXingWASM.prepareZXingModule({ overrides: { locateFile: (p, pre) => p.endsWith('.wasm') ? lib('zxing_reader.wasm') : pre + p }, fireImmediately: true }))
+  .then(() => ZXingWASM).catch(e => { zxingP = null; throw e })
+const ocr = () => ocrP ||= loadScript(lib('tesseract.min.js'))
+  .then(() => Tesseract.createWorker('eng', 1, { workerPath: lib('worker.min.js'), corePath: lib('core'), langPath: lib('lang'), workerBlobURL: false }))
+  .catch(e => { ocrP = null; throw e })
+const prewarm = () => { zxing().catch(() => {}); ocr().catch(() => {}) }
+
+async function toCanvas(file, max) {
+  const bmp = await createImageBitmap(file), k = Math.min(1, max / Math.max(bmp.width, bmp.height))
+  const c = Object.assign(document.createElement('canvas'), { width: Math.round(bmp.width * k), height: Math.round(bmp.height * k) })
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height)
+  return c
+}
+async function readLicense(file) {
+  const Z = await zxing(), bmp = await createImageBitmap(file)
+  const k = Math.min(1, LICENSE_PX / Math.max(bmp.width, bmp.height)), w = bmp.width * k, h = bmp.height * k
+  const c = document.createElement('canvas'), g = c.getContext('2d', { willReadFrequently: true })
+  // The reader only copes with a few degrees of tilt, and nobody holds a card straight, so also try the picture turned.
+  for (const deg of [0, 6, -6, 12, -12, 18, -18, 24, -24, 30, -30, 36, -36, 42, -42]) {
+    const r = deg * Math.PI / 180, sin = Math.abs(Math.sin(r)), cos = Math.abs(Math.cos(r))
+    c.width = Math.round(w * cos + h * sin); c.height = Math.round(w * sin + h * cos)
+    g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height)
+    g.translate(c.width / 2, c.height / 2); g.rotate(r); g.drawImage(bmp, -w / 2, -h / 2, w, h)
+    const [hit] = await Z.readBarcodes(g.getImageData(0, 0, c.width, c.height), { formats: ['PDF417'], tryHarder: true, maxNumberOfSymbols: 1, textMode: 'Plain' }) // the default mode writes line breaks as "<LF>"
+    const got = hit && CardRead.parseLicense(hit.text)
+    if (got) return got
+  }
+  return null
+}
+async function scanLicense(file) {
+  const mine = d, job = d.photos.licenseBack
+  d.scan.licenseBack = 'reading'
+  let got = null, broke = false
+  try { got = await readLicense(file) } catch { broke = true }
+  if (d !== mine || d.photos.licenseBack !== job) return // cleared or retaken while we read
+  if (got) {
+    for (const k of ['first', 'last', 'sex', 'street', 'city', 'state', 'zip']) if (got[k]) d[k] = got[k]
+    if (got.dob) d.dob = got.dob
+  }
+  d.fromLicense = !!got
+  d.scan.licenseBack = got ? 'ok' : broke ? 'broke' : 'fail'
+  if (steps[i].id === 'photo-licenseBack') render()
+}
+async function scanCard(k, file) {
+  const mine = d, job = d.photos[k]
+  d.scan[k] = 'reading'
+  let text = ''
+  try { text = (await (await ocr()).recognize(await toCanvas(file, 2000))).data.text } catch {}
+  if (d !== mine || d.photos[k] !== job) return
+  // Only fill boxes that are still empty, so nothing the patient typed gets overwritten.
+  const put = (key, v) => {
+    if (!v || String(get(key)).trim()) return 0
+    set(key, v); d.auto[key] = 1
+    const el = app.querySelector(`[data-k="${key}"]`); if (el && !el.value) el.value = v
+    return 1
+  }
+  const mbi = CardRead.findMBI(text), card = CardRead.readInsurance(text)
+  let n = 0
+  if (k === 'medicare' && mbi) n = put('p.id', mbi)
+  else if (k === 'medicare' && card.carrier && isMedicare(d.p.carrier)) { d.p.carrier = ''; n = put('p.carrier', card.carrier) + put('p.id', card.id) } // a Medicare Advantage card
+  else if (k === 'secondary') n = put('s.carrier', card.carrier) + put('s.id', card.id)
+  d.scan[k] = n ? 'ok' : 'none'
+  const note = app.querySelector(`[data-note="${k}"]`); if (note) { note.textContent = cardNote(k); note.className = 'note ' + d.scan[k] }
+}
+const cardNote = k => ({ reading: 'Reading your card…', ok: 'We filled in what we could read from your card. Please check it.' })[d.scan[k]] || ''
+const licenseNote = () => ({ reading: 'Reading your license…', ok: 'Got it. We filled in your name, birthday and address.',
+  fail: "We couldn't read the barcode. Try again closer, with the barcode filling most of the picture, or tap Next to type it in yourself.",
+  broke: "The scanner didn't load. Check the internet connection and retake the picture, or tap Next to type it in yourself." })[d.scan.licenseBack] || ''
+
+// ---- Steps ----------------------------------------------------------------------------------------
+function photoStep(k, title, text, o = {}) {
+  return { id: 'photo-' + k, skip: o.skip,
+    view: () => {
+      const src = d.photos[k], busy = o.wait && d.scan[k] === 'reading', note = o.note?.() || ''
+      return h(title, text) +
+        `<label class="shot${src ? ' has' : ''}"><input class="vh" type="file" accept="image/*" capture="environment" data-photo="${k}">${src ? `<img src="${src}" alt="${title}"><span>Tap to retake</span>` : `${CAMERA}<span>Tap to take a picture</span>`}</label>` +
+        `<p class="note ${d.scan[k] || ''}">${note}</p>` + (errs.photo ? `<p class="err">${errs.photo}</p>` : '') +
+        nav(busy ? '<span class="spin"></span>Reading your license…' : 'Next', true, 'next', busy) +
+        `<button class="btn link" data-act="nophoto" data-v="${k}">${o.skipLabel || "I don't have it with me"}</button>` },
+    check: () => d.photos[k] ? {} : { photo: 'Please take a picture, or tap the link below.' } }
+}
+
+function docStep(role, kind, title, sub) {
+  return { id: role,
+    view: () => {
+      const L = d.look[role], p = `look.${role}.`
+      if (L.list === null) return h(title, sub) +
+        field(p + 'name', "Doctor's name", { a: 'autocomplete="off" autocapitalize="words"', hint: 'For example: John Smith' }) +
+        `<div class="row" style="--n:3"><div style="grid-column:span 2">${field(p + 'city', 'City', { a: 'autocomplete="off" autocapitalize="words"' })}</div>${field(p + 'state', 'State', { a: 'maxlength="2" autocapitalize="characters" autocomplete="off"' })}</div>` +
+        (L.err ? `<p class="err">${esc(L.err)}</p>` : '') +
+        nav(L.busy ? '<span class="spin"></span>Searching…' : 'Find my doctor', true, 'doc-search', L.busy) +
+        `<button class="btn link" data-act="doc-skip">I'm not sure. The front desk can look it up.</button>`
+      const again = `<button class="btn alt" data-act="doc-again">Search again</button><button class="btn link" data-act="doc-skip">I'm not sure. The front desk can look it up.</button>`
+      if (!L.list.length) return h("We couldn't find that doctor", 'Check the spelling, or try the city their office is in.') + `<div class="acts">${again}</div>`
+      if (L.at >= L.list.length) return h("That's everyone we found", 'Try searching again with a different spelling or city.') + `<div class="acts">${again}</div>`
+      const x = L.list[L.at], initials = esc((x.first[0] || '') + (x.last[0] || ''))
+      return h('Is this your doctor?') +
+        `<div class="doc"><div class="face" data-npi="${esc(x.npi)}">${x.photo ? `<img src="${esc(x.photo)}" alt="" referrerpolicy="no-referrer">` : initials}</div>
+         <h2>${esc(docName(x))}</h2><p class="sp">${esc(x.specialty)}</p>
+         <p>${esc(x.address)}</p><p>${esc(x.city)}, ${esc(x.state)} ${esc(x.zip)}</p>${x.phone ? `<p>${esc(x.phone)}</p>` : ''}
+         <p class="cap" data-cap ${x.photo ? '' : 'hidden'}>Photo found online. Please check the name and office address too.</p></div>
+         <div class="acts"><button class="btn" data-act="doc-yes" data-primary>Yes, that's my doctor</button>
+         <button class="btn alt" data-act="doc-no">No, show me someone else</button>${again}</div>
+         <p class="count">${L.at + 1} of ${L.list.length}</p>`
+    },
+    search: () => docSearch(role, kind),
+    after: () => { const L = d.look[role]; if (L.list?.[L.at]) loadPhoto(L.list[L.at]) } }
+}
+
+const checkName = () => need('first', 'last')
+const checkBorn = () => {
+  const { mo, day, yr } = d.dob, dt = new Date(+yr, +mo - 1, +day), age = (Date.now() - dt) / 31557600000, e = {}
+  if (!(yr.length === 4 && dt.getMonth() === +mo - 1 && dt.getDate() === +day && age > 0 && age < 120)) e.dob = 'Please enter your full date of birth.'
+  if (!d.sex) e.sex = 'Please choose one.'
+  return e
+}
+const checkHome = () => {
+  const e = need('street', 'city')
+  d.state = d.state.trim().toUpperCase()
+  if (!/^[A-Z]{2}$/.test(d.state)) e.state = 'Two letters, like UT.'
+  if (!/^\d{5}(-\d{4})?$/.test(d.zip.trim())) e.zip = 'Please enter a 5-digit zip code.'
+  return e
+}
+// Screens the license barcode already answered are skipped (the patient confirms them on "Is this you?").
+const fromLicense = check => () => d.fromLicense && !Object.keys(check()).length
+
+const steps = [
+  { id: 'welcome', view: () => h('Welcome to Foot Solutions', 'This takes about 5 minutes. Please have these ready:') +
+    `<ul class="need"><li>Your driver's license</li><li>Your Medicare card</li><li>Any other insurance card you have</li><li>The names of your foot doctor and primary care doctor</li></ul>
+     <p class="muted">Your information is only used by Foot Solutions for your care. Nothing is saved on this device.</p>` + nav('Start', false) },
+  { id: 'diabetic', view: () => h('Are you diabetic?') +
+    `<div class="choice"><button class="btn alt" data-act="diabetic" data-v="Y">Yes</button><button class="btn alt" data-act="diabetic" data-v="N">No</button></div>
+     <div class="acts"><button class="btn link" data-act="back">Back</button></div>` },
+  photoStep('license', "Your driver's license", "Take a picture of the <b>front</b> of your driver's license or photo ID."),
+  photoStep('licenseBack', 'Now the back of your license', "Flip it over and take a picture of the side with the <b>barcode</b>. Get close so the barcode fills most of the picture. We'll use it to fill in your name, birthday and address.",
+    { skip: () => !d.photos.license, wait: true, note: licenseNote, skipLabel: "Skip this. I'll type it in." }),
+  photoStep('medicare', 'Your Medicare card', 'Take a picture of the <b>front</b> of your Medicare card. If you have a Medicare Advantage plan, use that card.'),
+  photoStep('secondary', 'Your other insurance card', 'If you have a second insurance card, like a Medicare supplement plan, take a picture of the <b>front</b>.', { skipLabel: "I don't have another insurance card" }),
+  { id: 'me', skip: () => !d.fromLicense, view: () => h('Is this you?', 'We read this from the back of your license.') +
+    `<div class="doc" style="text-align:left"><h2>${esc(d.first)} ${esc(d.last)}</h2>${dobText() ? `<p>Born ${dobText()}${d.sex ? (d.sex === 'M' ? ', male' : ', female') : ''}</p>` : ''}${d.street ? `<p>${esc(d.street)}</p><p>${esc(d.city)}, ${esc(d.state)} ${esc(d.zip)}</p>` : ''}</div>
+     <div class="acts"><button class="btn" data-act="next" data-primary>Yes, that's me</button><button class="btn alt" data-act="notme">Something is wrong</button></div>
+     <div class="acts"><button class="btn link" data-act="back">Back</button></div>` },
+  { id: 'name', skip: fromLicense(checkName), view: () => h('What is your name?') + field('first', 'First name', { a: 'autocomplete="given-name"' }) + field('last', 'Last name', { a: 'autocomplete="family-name"' }) + nav(),
+    check: checkName },
+  { id: 'born', skip: fromLicense(checkBorn), view: () => h('When were you born?') +
+    `<div class="row" style="--n:3"><label class="f"><span>Month</span><select data-k="dob.mo"><option value="">Month</option>${MONTHS.map((m, n) => { const v = String(n + 1).padStart(2, '0'); return `<option value="${v}"${d.dob.mo === v ? ' selected' : ''}>${m}</option>` }).join('')}</select></label>` +
+    field('dob.day', 'Day', { a: 'inputmode="numeric" maxlength="2" autocomplete="bday-day"' }) + field('dob.yr', 'Year', { a: 'inputmode="numeric" maxlength="4" autocomplete="bday-year"' }) + '</div>' +
+    (errs.dob ? `<p class="err" style="margin-top:-8px">${errs.dob}</p>` : '') +
+    `<p class="flabel" style="margin-top:12px">Sex</p><div class="choice">${[['M', 'Male'], ['F', 'Female']].map(([v, t]) => `<button class="btn alt" data-act="sex" data-v="${v}" aria-pressed="${d.sex === v}">${t}</button>`).join('')}</div>` +
+    (errs.sex ? `<p class="err">${errs.sex}</p>` : '') + nav(),
+    check: checkBorn },
+  { id: 'contact', view: () => h('How can we reach you?') + field('phone', 'Phone number', { a: 'type="tel" autocomplete="tel"' }) + field('email', 'Email', { a: 'type="email" autocomplete="email" autocapitalize="none"', opt: true }) + nav(),
+    check: () => {
+      const n = d.phone.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, ''), e = {}
+      if (n.length === 10) d.phone = `(${n.slice(0, 3)}) ${n.slice(3, 6)}-${n.slice(6)}`; else e.phone = 'Please enter a 10-digit phone number.'
+      if (d.email.trim() && !/^\S+@\S+\.\S+$/.test(d.email.trim())) e.email = "That email doesn't look right."
+      return e
+    } },
+  { id: 'home', skip: fromLicense(checkHome), view: () => h('What is your home address?') + field('street', 'Street address', { a: 'autocomplete="address-line1"' }) + field('city', 'City', { a: 'autocomplete="address-level2"' }) +
+    `<div class="row">${field('state', 'State', { a: 'maxlength="2" autocapitalize="characters" autocomplete="address-level1"' })}${field('zip', 'Zip code', { a: 'inputmode="numeric" maxlength="10" autocomplete="postal-code"' })}</div>` + nav(),
+    check: checkHome },
+  { id: 'visited', view: () => h('Have you been to Foot Solutions before?') +
+    `<div class="choice">${[['N', 'Yes'], ['Y', 'No']].map(([v, t]) => `<button class="btn alt" data-act="visited" data-v="${v}" aria-pressed="${d.newCustomer === v}">${t}</button>`).join('')}</div>` + (errs.visited ? `<p class="err">${errs.visited}</p>` : '') + nav(),
+    check: () => d.newCustomer ? {} : { visited: 'Please choose one.' } },
+  { id: 'medicare', view: () => { if (!d.p.holder) d.p.holder = `${d.first} ${d.last}`.trim()
+      return h('Your Medicare information', d.photos.medicare ? 'You can find this on the card you just took a picture of.' : '') +
+      `<p class="note ${d.scan.medicare || ''}" data-note="medicare" style="margin:-8px 0 16px">${cardNote('medicare')}</p>` +
+      field('p.id', 'Medicare number', { a: 'autocomplete="off" autocapitalize="characters" spellcheck="false"', hint: '11 letters and numbers, like 1EG4-TE5-MK73', opt: !d.photos.medicare }) +
+      field('p.carrier', 'Insurance company', { hint: 'Leave this as Medicare unless you have a Medicare Advantage plan.' }) +
+      field('p.phone', 'Insurance phone number', { a: 'type="tel"', opt: true, hint: 'On the back of your card.' }) +
+      field('p.holder', 'Name on the card') + nav() },
+    check: () => {
+      const e = need('p.carrier', 'p.holder', ...(d.photos.medicare ? ['p.id'] : []))
+      const m = d.p.id.toUpperCase().replace(/[^A-Z0-9]/g, '')
+      if (m && isMedicare(d.p.carrier)) {
+        if (CardRead.MBI.test(m)) d.p.id = `${m.slice(0, 4)}-${m.slice(4, 7)}-${m.slice(7)}`
+        else e['p.id'] = "That doesn't look like a Medicare number. It has 11 letters and numbers, and never uses the letters S, L, O, I, B or Z."
+      }
+      return e
+    } },
+  { id: 'secondaryInfo', skip: () => !d.photos.secondary,
+    view: () => { if (!d.s.holder) d.s.holder = `${d.first} ${d.last}`.trim()
+      return h('Your other insurance', 'You can find this on the card you just took a picture of.') +
+      `<p class="note ${d.scan.secondary || ''}" data-note="secondary" style="margin:-8px 0 16px">${cardNote('secondary')}</p>` +
+      field('s.carrier', 'Insurance company') + field('s.id', 'Member ID number', { a: 'autocomplete="off" autocapitalize="characters" spellcheck="false"' }) +
+      field('s.phone', 'Insurance phone number', { a: 'type="tel"', opt: true, hint: 'On the back of the card.' }) + field('s.holder', 'Name on the card') + nav() },
+    check: () => need('s.carrier', 's.id', 's.holder') },
+  docStep('ref', 'podiatrist', 'Who is your podiatrist (foot doctor)?'),
+  docStep('pcp', '', 'Who is your primary care doctor?', 'The doctor who evaluates your diabetes.'),
+  { id: 'review', view: () => {
+      const sec = (t, id, ...lines) => `<div class="rev"><h3>${t}<button data-act="goto" data-v="${id}">Edit</button></h3>${lines.filter(Boolean).map(l => `<p>${esc(l)}</p>`).join('')}</div>`
+      const thumb = (k, t) => d.photos[k] ? `<button data-act="goto" data-v="photo-${k}" aria-label="Retake ${t}"><img src="${d.photos[k]}" alt=""></button>` : ''
+      return h('Please check your answers') +
+        `<div class="rev"><h3>Card pictures</h3><div class="thumbs">${thumb('license', "license front")}${thumb('licenseBack', 'license back')}${thumb('medicare', 'Medicare card')}${thumb('secondary', 'other insurance card')}</div>${['license', 'medicare'].filter(k => !d.photos[k]).map(k => `<p>No ${k === 'license' ? "driver's license" : 'Medicare card'} picture. Show it at the front desk.</p>`).join('')}</div>` +
+        sec('Name', 'name', `${d.first} ${d.last}`) +
+        sec('Birthday', 'born', `${dobText()}, ${d.sex === 'M' ? 'Male' : 'Female'}`) +
+        sec('Phone and email', 'contact', d.phone, d.email) +
+        sec('Home address', 'home', d.street, `${d.city}, ${d.state} ${d.zip}`) +
+        sec('Been here before', 'visited', d.newCustomer === 'N' ? 'Yes' : 'No') +
+        sec('Medicare', 'medicare', d.p.carrier, d.p.id) +
+        sec('Other insurance', d.photos.secondary ? 'secondaryInfo' : 'photo-secondary', d.photos.secondary ? `${d.s.carrier}, ${d.s.id}` : 'None') +
+        sec('Podiatrist (foot doctor)', 'ref', docLine(d.ref)) +
+        sec('Primary care doctor', 'pcp', docLine(d.pcp)) + nav('Finish')
+    } },
+  { id: 'done', after: () => SEND_URL && !d.sent && send(), view: () => {
+      const clear = `<button class="btn alt" data-act="restart">Clear and start a new patient</button>`
+      if (!SEND_URL) return h(`Thank you, ${esc(d.first)}!`, 'Please hand this back to the front desk.') +
+        `<div class="acts"><button class="btn" data-act="print">Print intake form</button>${clear}</div>
+         <p class="muted" style="margin-top:20px">For staff: none of this is saved. Print the form before clearing. It clears itself after 10 minutes without use.</p>`
+      if (d.sent === 'failed') return h("We couldn't send your form", 'Please hand this to the front desk.') +
+        `<div class="acts"><button class="btn" data-act="send">Try sending again</button><button class="btn alt" data-act="print">Print it instead</button>${clear}</div>
+         <p class="muted" style="margin-top:20px">For staff: nothing was sent and nothing is saved. Send or print before clearing.</p>`
+      if (d.sent === 'sent') return h(`Thank you, ${esc(d.first)}!`, 'Your form has been sent to the front desk. Please hand this back to them.') +
+        `<div class="acts">${clear}<button class="btn link" data-act="print">Print a copy</button></div>`
+      return h(`Thank you, ${esc(d.first)}!`, 'Sending your form to the front desk…') + `<div class="acts"><button class="btn" disabled><span class="spin"></span>Sending…</button></div>`
+    } },
+  { id: 'sorry', skip: () => true, view: () => h('Sorry, this form is only for customers with diabetes.', 'Please let the front desk know and they will help you.') +
+    `<div class="acts"><button class="btn alt" data-act="startover">Start over</button></div>` },
+]
+const idx = id => steps.findIndex(s => s.id === id)
+
+function render() {
+  app.innerHTML = steps[i].view()
+  bar.style.width = (i / idx('done') * 100) + '%'
+  ;(app.querySelector('.bad input, .bad select') || app.querySelector('h1'))?.focus()
+  if (!Object.keys(errs).length) scrollTo(0, 0)
+  steps[i].after?.()
+}
+function go(dir) {
+  errs = {}
+  // Editing from the review page returns there, unless a new second card still needs its details.
+  if (dir > 0 && fromReview && !(steps[i].id === 'photo-secondary' && d.photos.secondary && !d.s.carrier)) { fromReview = false; i = idx('review') }
+  else do i += dir; while (steps[i]?.skip?.())
+  render()
+}
+function next() {
+  errs = steps[i].check?.() || {}
+  Object.keys(errs).length ? render() : go(1)
+}
+
+async function post(url, body) {
+  const r = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
+  const j = await r.json().catch(() => ({}))
+  if (!r.ok) throw new Error(j.error || 'Something went wrong. Please try again.')
+  return j
+}
+async function docSearch(role, kind) {
+  const L = d.look[role]
+  errs = need(`look.${role}.name`, `look.${role}.city`)
+  if (Object.keys(errs).length) return render()
+  L.busy = true; L.err = ''; render()
+  try { L.list = (await post('api/doctors', { name: L.name, city: L.city, state: L.state, kind })).doctors; L.at = 0 }
+  catch (e) { L.err = e.message }
+  L.busy = false
+  if (d.look[role] === L) render() // the form may have been cleared while we waited
+}
+async function loadPhoto(x) {
+  if ('photo' in x) return
+  x.photo = null
+  try { x.photo = (await post('api/photo', { first: x.first, last: x.last, credential: x.credential, city: x.city, state: x.state })).photo || null } catch {}
+  const face = app.querySelector(`.face[data-npi="${CSS.escape(x.npi)}"]`)
+  if (x.photo && face) { face.innerHTML = `<img src="${esc(x.photo)}" alt="" referrerpolicy="no-referrer">`; app.querySelector('[data-cap]').hidden = false }
+}
+
+const acts = {
+  next, back: () => go(-1),
+  diabetic: v => { if (v === 'Y') { prewarm(); go(1) } else { i = idx('sorry'); render() } },
+  startover: reset,
+  nophoto: k => {
+    URL.revokeObjectURL(d.photos[k]); delete d.photos[k]; delete d.files[k]; delete d.scan[k]
+    if (k === 'license' || k === 'licenseBack') d.fromLicense = false
+    go(1)
+  },
+  notme: () => { d.fromLicense = false; go(1) },
+  sex: v => { d.sex = v; delete errs.sex; render() },
+  visited: v => { d.newCustomer = v; go(1) },
+  'doc-search': () => steps[i].search(),
+  'doc-yes': () => { const L = d.look[steps[i].id]; d[steps[i].id] = L.list[L.at]; go(1) },
+  'doc-no': () => { d.look[steps[i].id].at++; render() },
+  'doc-again': () => { d.look[steps[i].id].list = null; render() },
+  'doc-skip': () => { const L = d.look[steps[i].id]; d[steps[i].id] = { unverified: true, name: L.name.trim(), city: L.city.trim() }; go(1) },
+  goto: id => { fromReview = true; errs = {}; i = idx(id); if (d.look[id]) d.look[id].list = null; render() },
+  print: () => { sheetEl.innerHTML = sheet(); print() },
+  send: () => send(),
+  restart: () => (d.sent === 'sent' || confirm('Clear everything for this patient?')) && reset(),
+}
+app.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && !b.disabled) acts[b.dataset.act](b.dataset.v) })
+app.addEventListener('input', e => { const k = e.target.dataset.k; if (k) { set(k, e.target.value); delete d.auto[k] } })
+app.addEventListener('change', e => {
+  const k = e.target.dataset.photo, file = e.target.files?.[0]
+  if (!k || !file) return
+  if (d.photos[k]) URL.revokeObjectURL(d.photos[k])
+  d.photos[k] = URL.createObjectURL(file); d.files[k] = file; errs = {}
+  if (k === 'licenseBack') scanLicense(file)
+  if (k === 'medicare' || k === 'secondary') scanCard(k, file)
+  render()
+})
+app.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('input')) { e.preventDefault(); app.querySelector('[data-primary]')?.click() } })
+addEventListener('beforeprint', () => { if (steps[i].id === 'done') sheetEl.innerHTML = sheet() })
+addEventListener('pageshow', e => e.persisted && reset()) // never restore a filled-in form from the back/forward cache
+let idle
+const poke = () => { clearTimeout(idle); idle = setTimeout(() => i > 0 && reset(), IDLE_MS) }
+;['pointerdown', 'keydown', 'input'].forEach(t => addEventListener(t, poke, true))
+
+function sheet(pics = d.photos) {
+  const doc = x => !x ? {} : x.unverified ? { name: `${x.name || 'Not given'}${x.city ? ' (' + x.city + ')' : ''}, please look up` } : { ...x, name: docName(x) }
+  const R = doc(d.ref), C = doc(d.pcp)
+  const P = { ...d.p, phone: d.p.phone || (isMedicare(d.p.carrier) ? MEDICARE_PHONE : '') }, S = d.photos.secondary ? d.s : {}
+  const f = (l, v) => `<div class="fld"><div class="v">${esc(v)}</div><div class="l">${l}</div></div>`
+  const ln = (cols, ...x) => `<div class="ln" style="grid-template-columns:${cols}">${x.join('')}</div>`
+  const ins = (n, x) => ln('1fr 1fr', f(`${n} Insurance ID #`, x.id), f(`${n} Carrier Name`, x.carrier)) + ln('1fr', f('Insurance Phone', x.phone)) + ln('1fr', f('Policy Holder Name', x.holder)) + ln('1fr 1fr', f('Deductible/Coinsurance'), f('Eligibility/Benefits'))
+  const phys = (t, x) => ln('1fr', f(`<b>${t}</b>`, x.name)) + ln('1fr', f('NPI', x.npi)) + ln('1fr', f('Address', x.address)) + ln('2fr 1fr 1fr', f('City', x.city), f('State', x.state), f('Zip', x.zip)) + ln('1fr 1fr', f('Office Phone', x.phone), f('Fax', x.fax))
+  const box = (t, items) => `<div class="ck"><span class="bx"></span><div><b>${t}</b>${items.map(x => `<div>${x}</div>`).join('')}</div></div>`
+  const pic = (k, t) => pics[k] ? `<figure><img src="${pics[k]}" alt=""><figcaption>${t}</figcaption></figure>` : ''
+  return `<div class="sh-head"><div class="sh-logo">FOOT<br>SOLUTIONS</div>${d.photos.medicare ? '' : '<div class="sh-need">NEED INS. CARD</div>'}
+    <div class="sh-store">Foot Solutions Orem<br>576 E University Pkwy<br>Orem, UT 84097<br>Tel: 801-590-7398<br>orem@footsolutions.com</div></div>
+    <h2 class="sh-title">Patient Information/Intake Form</h2>
+    <div class="sh-cols"><div>
+      ${ln('1fr', f('Name', `${d.first} ${d.last}`))}${ln('1.3fr 1fr .45fr', f('Phone', d.phone), f('Date of Birth', dobText()), f('M/F', d.sex))}
+      ${ln('1fr', f('Email', d.email))}${ln('1fr', f('Instructions'))}${ins('Primary', P)}${phys('Referring Physician', R)}
+    </div><div>
+      ${ln('1fr 1fr', f('New Customer Y/N', d.newCustomer), f('Date', new Date().toLocaleDateString('en-US')))}${ln('1fr', f('Address', d.street))}
+      ${ln('2fr 1fr 1fr', f('City', d.city), f('State', d.state), f('Zip', d.zip))}${ln('1fr', f('&nbsp;'))}${ins('Secondary', S)}${phys('Certifying Physician', C)}
+    </div></div>
+    <div class="sh-band">Insurance Process/Documentation Checklist</div>
+    <div class="sh-cols">${box('Insurance (Commercial)', ['Verified eligibility / benefits', 'Photo copy of insurance card / photo ID', 'Prescription received', 'Medical records received'])}
+      ${box('Medicare (Includes Advantage, Medicare Supplement Plans)', ['PECOS verification', 'Verified eligibility / benefits / same or similar', 'Photo copy of insurance card / photo ID', 'DWO received &lt;6 mos', 'SCP received &lt;3 mos', 'Medical Notes diabetic evaluation received &lt;6 mos', 'Medical notes foot exam received &lt;6 mos', 'In-person supplier evaluation completed', 'Proof of Delivery/Evaluation completed'])}</div>
+    <p class="sh-sub">Patient Documents (signed acknowledgement &amp; receipt required)</p>
+    <div class="sh-cols">${box('First Visit', ['Notice of Privacy Practices', 'Medicare DMEPOS Supplier Standards', "Summary of patient's Bill of Rights &amp; Responsibilities", 'HIPAA Privacy Authorization Form (if applicable)'])}
+      ${box('At time of delivery', ['Proof Of Delivery/Warranty/Exchange Policy', 'Care &amp; Use Instructions', 'Grievance (Complaint) Policy', 'Customer Satisfaction Survey', 'Advanced Beneficiary Notice (if applicable)', 'Medicare Capped Rental...Notification', 'Refusal of Prescribed Items &amp; Services (if applicable)'])}</div>
+    ${ln('1.2fr 1.2fr .6fr', f('<b>Intake Associate Name</b>'), f('<b>Signature</b>'), f('<b>Date</b>'))}
+    <div class="sh-photos"><h2 class="sh-title">Card pictures: ${esc(d.first)} ${esc(d.last)}</h2>${pic('license', "Driver's license (front)")}${pic('licenseBack', "Driver's license (back)")}${pic('medicare', 'Medicare card')}${pic('secondary', 'Other insurance card')}</div>`
+}
+
+// Emails the finished form through the store's Google Workspace (covered by Google's HIPAA agreement).
+// The form goes from this device straight to Google; it never passes through our own server.
+async function send() {
+  const mine = d
+  d.sent = 'sending'; render()
+  try {
+    const b64 = blob => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result.split(',')[1]); r.onerror = no; r.readAsDataURL(blob) })
+    const names = { license: 'license-front', licenseBack: 'license-back', medicare: 'medicare-card', secondary: 'other-insurance-card' }
+    const photos = await Promise.all(Object.entries(d.files).map(async ([k, f]) => {
+      const c = await toCanvas(f, 1600)
+      return { k, data: await b64(await new Promise(ok => c.toBlob(ok, 'image/jpeg', 0.85))) }
+    }))
+    const page = `<!doctype html><html><head><meta charset="utf-8"><title>Intake: ${esc(d.first)} ${esc(d.last)}</title><style>${document.getElementById('sheet-css').textContent}@media screen{body{margin:.4in}}</style></head>` +
+      `<body><section id="sheet" style="display:block">${sheet(Object.fromEntries(photos.map(p => [p.k, 'data:image/jpeg;base64,' + p.data])))}</section></body></html>`
+    const who = x => !x ? 'Not given' : x.unverified ? `${x.name || 'Not given'} (not found, please look up)` : `${docName(x)}, NPI ${x.npi}, ${x.address}, ${x.city} ${x.state}, phone ${x.phone || '-'}, fax ${x.fax || '-'}`
+    const text = [`New patient intake from the iPad, ${new Date().toLocaleString('en-US')}.`, '',
+      `Name: ${d.first} ${d.last}`, `Date of birth: ${dobText()}   Sex: ${d.sex}`, `Phone: ${d.phone}`, `Email: ${d.email || '-'}`,
+      `Address: ${d.street}, ${d.city}, ${d.state} ${d.zip}`, `New customer: ${d.newCustomer}`,
+      `Primary insurance: ${d.p.carrier} ${d.p.id || '(no number given)'}`, `Other insurance: ${d.photos.secondary ? `${d.s.carrier} ${d.s.id}` : 'None'}`,
+      `Podiatrist (referring): ${who(d.ref)}`, `Primary care (certifying): ${who(d.pcp)}`, '',
+      'The filled-in intake form is attached. Open it to print. The card pictures are attached too.'].join('\n')
+    const files = [{ name: `intake-${d.last}-${d.first}.html`.replace(/[^\w.-]/g, ''), type: 'text/html', data: await b64(new Blob([page], { type: 'text/html' })) },
+      ...photos.map(p => ({ name: names[p.k] + '.jpg', type: 'image/jpeg', data: p.data }))]
+    const r = await fetch(SEND_URL, { method: 'POST', headers: { 'content-type': 'text/plain' }, body: JSON.stringify({ subject: `New intake: ${d.first} ${d.last}`, text, files }) })
+    const j = await r.json()
+    if (!j.ok) throw new Error(j.error)
+    if (d === mine) d.sent = 'sent'
+  } catch {
+    if (d === mine) d.sent = 'failed'
+  }
+  if (d === mine && steps[i].id === 'done') render()
+}
+
+fresh(); render()
+</script>
+</body>
+</html>
